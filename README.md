@@ -1,24 +1,44 @@
-# demo_access_refresh_token_app
+# Frontend_Flutter
 
-A new Flutter project.
+Flutter mobile app for the **Employee & Product API**, built with GetX, a REST API, the Repository Pattern and JWT authentication.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- Login and logout with JWT (access token is refreshed automatically on 401)
+- Product list with search and category filter
+- Employee list with search
+- Add, update and delete employees (delete asks for confirmation)
+- Form validation, loading indicators and error handling
 
-A few resources to get you started if this is your first Flutter project:
+## API
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+The backend runs at `http://localhost:33033` (Swagger: `/swagger-ui/index.html`).
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+| Feature | Endpoint |
+|---|---|
+| Login / Refresh / Logout | `POST /api/auth/login`, `/api/auth/refresh`, `/api/auth/logout` |
+| Products | `GET /api/products` |
+| Employees | `GET`, `POST /api/employees`, `PUT`, `DELETE /api/employees/{id}` |
 
-Access API with Token
-- Pass Authorization Header = "Bearer Token"
-  - Expired => status 401
-- Renew Token
-  - if response 200 => Retry 
-  - if response 402=> Auto Logout
+The app connects to `http://10.0.2.2:33033` by default (the Android emulator's address for your PC).
+To change it, tap the gear icon on the login screen or open the Profile tab.
+
+## Project structure
+
+```
+lib/
+  core/services/      HTTP client (ApiService) with token refresh
+  data/local/         Token and settings storage (GetStorage)
+  data/repositories/  Auth, Product and Employee repositories
+  models/             API models
+  modules/            Screens: splash, login, home, dashboard, product, employee
+  routes/             GetX routes
+  widgets/            Shared UI widgets
+```
+
+## Run
+
+```
+flutter pub get
+flutter run
+```
