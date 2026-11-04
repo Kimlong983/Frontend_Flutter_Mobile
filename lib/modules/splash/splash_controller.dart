@@ -1,23 +1,20 @@
-import 'package:demo_access_refresh_token_app/data/local/token_store_local.dart';
-import 'package:demo_access_refresh_token_app/routes/app_route_name.dart';
 import 'package:get/get.dart';
+import '../../data/repositories/auth_repository.dart';
+import '../../routes/app_route_name.dart';
 
 class SplashController extends GetxController {
-  var isLoading = false.obs;
+  final AuthRepository authRepository;
+
+  SplashController({required this.authRepository});
+
   @override
-  void onInit() {
-    _checkToken();
-    super.onInit();
+  void onReady() {
+    super.onReady();
+    _redirect();
   }
 
-  Future<void> _checkToken() async {
-    isLoading.value = true;
-   await Future.delayed(Duration(seconds: 2));
-    if (TokenStoreLocal.getAccessToken().isNotEmpty) {
-      Get.offNamed(AppRouteName.home);
-    } else {
-      Get.offNamed(AppRouteName.login);
-    }
-    isLoading.value = false;
+  Future<void> _redirect() async {
+    await Future.delayed(const Duration(milliseconds: 1200));
+    Get.offAllNamed(authRepository.isLoggedIn() ? AppRouteName.home : AppRouteName.login);
   }
 }
